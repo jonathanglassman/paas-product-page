@@ -1,4 +1,4 @@
-ruby "~> 2.4.1"
+ruby "~> 2.5"
 
 source 'https://rubygems.org'
 gem "sinatra", "~> 2.0"
