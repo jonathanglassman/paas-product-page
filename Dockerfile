@@ -1,4 +1,4 @@
-FROM ruby:2.4.3-alpine
+FROM ruby:2.5-alpine
 
 ENV RUNTIME_PACKAGES "git make"
 ENV DEV_PACKAGES "gcc ruby-dev g++ zlib-dev libffi-dev"
