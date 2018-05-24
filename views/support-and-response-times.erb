@@ -1,0 +1,125 @@
+<% content_for :head do %>
+	<title>Support and response times - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support and response times', href: request.path_info, active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-one-third">
+			<%== erb :'partials/_subnav', :locals => {active: 'support-and-response-times'} %>
+		</div>
+
+		<div class="column-two-thirds">
+			<h1 class="heading-xlarge">How we support the platform and our tenants</h1>
+			<p>
+			GOV.UK PaaS is supported 24 hours a day, 7 days a week by the team that builds it. Our <a href="https://docs.cloud.service.gov.uk/#responsibility-model">responsibility model</a> details the areas we cover.
+			</p>
+			<p>
+			You can email us for support at <a href="mailto:gov-uk-paas-support@digital.cabinet-office.gov.uk">gov-uk-paas-support@digital.cabinet-office.gov.uk</a>.
+			</p>
+			<p>
+			From Monday to Friday, between 9 and 5 and excluding bank holidays (‘in hours’ support), our response times (see below) range from 20 minutes to 1 business day depending on:
+			</p>
+			<ul class="list list-bullet">
+				<li>the nature of the request - we prioritise issues over queries</li>
+				<li>the severity of the issue</li>
+				<li>whether it affects a live service</li>
+				<li>whether it was raised during or outside of working hours</li>
+			</ul>
+
+			<p>
+			Between 5pm and 9am on Monday to Friday, at weekends and during bank holidays (‘out of hours’ support) we provide emergency support for critical incidents affecting live production services.
+			</p>
+			<p>
+			Tenants with services in production can contact us to <a href="/support">notify and escalate about a critical issue out of working hours</a>.
+			</p>
+
+			<h2 class="heading-large"><a name="response_times">Response and resolution times for services in production</a></h2>
+			<p>
+			We address incidents, issues and requests within the timeframes detailed below:
+			</p>
+
+			<table>
+				<tbody>
+					<tr>
+						<th>Classification</th>
+						<th>Example</th>
+						<th>In hours</th>
+						<th>Out of hours</th>
+					</tr>
+					<tr>
+						<th scope="row">P1<br/>Critical<br/>Incident</th>
+						<td>
+							<ul class="list list-bullet">
+								<li  class="font-xsmall">Applications are unavailable to end users due to a problem with our platform</li>
+								<li  class="font-xsmall">Serious security breach on the platform</li>
+								<li  class="font-xsmall">You can't make a critical fix to your production app due to the PaaS API not being available</li>
+								<li  class="font-xsmall">Your live production app has a P1 issue which cannot be resolved without help from us</li>
+							</ul>
+						</td>
+						<td>
+							<p class="font-xsmall">Start work &amp; respond: 20 minutes</p>
+							<p class="font-xsmall">Update time: 1hr</p>
+						</td>
+						<td>
+							<p class="font-xsmall">Start work &amp; respond: 40 minutes</p>
+							<p class="font-xsmall">Update time: 1hr</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">P2<br/>Major<br/>Incident</th>
+						<td>
+							<ul class="list list-bullet">
+								<li class="font-xsmall">Can&apos;t update/push apps due to platform issue</li>
+								<li class="font-xsmall">Upstream vulnerabilities in GOV.UK PaaS components</li>
+								<li class="font-xsmall">Elevated error rates on the GOV.UK PaaS platform</li>
+								<li class="font-xsmall">Complete failure of a GOV.UK PaaS component</li>
+								<li class="font-xsmall">Substantial degradation of the GOV.UK PaaS service</li>
+							</ul>
+						</td>
+						<td>
+							<p class="font-xsmall">Start work &amp; respond: 30 minutes</p>
+							<p class="font-xsmall">Update time: 2hr</p>
+						</td>
+						<td>
+							<p class="font-xsmall"></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">P3<br/>Significant<br/>issue</th>
+						<td>
+							<ul class="list list-bullet">
+								<li class="font-xsmall">Users (platform users or end users) experiencing intermittent or degraded service due to platform issue.</li>
+							</ul>
+						</td>
+						<td>
+							<p class="font-xsmall">Start work &amp; respond: 2 hours</p>
+							<p class="font-xsmall">Update time: 4 hours</p>
+						</td>
+						<td>
+							<p class="font-xsmall"></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">P4<br/>Minor<br/>issue</th>
+						<td>
+							<ul class="list list-bullet">
+								<li class="font-xsmall">Component failure that is not immediately impacting on service</li>
+							</ul>
+						</td>
+						<td>
+							<p class="font-xsmall">Start work &amp; respond: 1 business day</p>
+							<p class="font-xsmall">Update time: 2 business days</p>
+						</td>
+						<td>
+							<p class="font-xsmall"></p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
