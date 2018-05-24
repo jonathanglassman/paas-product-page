@@ -46,11 +46,13 @@ $(function(){
 
 	function goBack(e) {
 		if (window.location.pathname === '/signup' && stepStack.length > 1) {
+			console.log("clickStepBack is happening???")
 			clickStepBack(e);
 			return;
 		}
-
-		window.history.go(-1);
+		if (!($(e.target.location.href.indexOf('#') > -1))) {
+			window.history.go(-1);
+		}
 	}
 
 	function toggleInviteRadio() {
@@ -194,6 +196,7 @@ $(function(){
 
 	function init() {
 		var hasErrors = $('.form-group-error, .error-summary').length > 0;
+		console.log("reaching herre??")
 
 		// setup event handlers
 		$(window)
