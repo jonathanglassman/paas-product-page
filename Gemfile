@@ -1,8 +1,8 @@
 ruby "~> 2.5"
 
 source 'https://rubygems.org'
-gem "sinatra", "~> 2.0"
-gem "sinatra-contrib", "~> 2.0"
+gem "sinatra", "~> 2.0.3"
+gem "sinatra-contrib", "~> 2.0.3"
 gem "json", "~> 2.1"
 gem "rspec", "~> 3.6"
 gem "puma", "~> 3.10"
