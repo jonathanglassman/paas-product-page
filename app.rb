@@ -92,6 +92,10 @@ class App < Sinatra::Base
 		end
 	end
 
+	post '/support' do
+		redirect("/support/#{params[:support_form]}", 302)
+	end
+
 	get '/signup' do
 		@errors = {}
 		@form = Forms::Signup.new({
@@ -143,9 +147,9 @@ class App < Sinatra::Base
 		# Check for a relevant erb template
 		view_name = path.sub(/\.html$/, '')
 		# Protected against directory traversal by Rack::Protection::PathTraversal
-		# We also restrict view names to alphanumeric, dash and underscore characters.
+		# We also restrict view names to alphanumeric and underscore characters.
 		# These are definitively safe against being used for directory traversal/etc.
-		if !/[^a-zA-Z0-9_-]/.match(view_name)
+		if !/[^\/a-zA-Z0-9_-]/.match(view_name)
 			# Check for an appropriately-named view
 			if File.exist? "views/#{view_name}.erb"
 				# Strip `.html` extension if present
