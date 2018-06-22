@@ -101,7 +101,6 @@ GEM
     staccato (0.5.1)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    trollop (2.1.2)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     unf (0.1.4)
@@ -113,8 +112,6 @@ GEM
       hashdiff
     xpath (2.1.0)
       nokogiri (~> 1.3)
-    yamllint (0.0.9)
-      trollop (~> 2)
     zendesk_api (1.16.0)
       faraday (~> 0.9)
       hashie (>= 3.5.2, < 4.0.0)
@@ -142,7 +139,6 @@ DEPENDENCIES
   sprockets-helpers (~> 1.2)
   staccato (~> 0.5.1)
   webmock (~> 3.0)
-  yamllint (~> 0.0.9)
   zendesk_api (~> 1.16)
 
 RUBY VERSION
