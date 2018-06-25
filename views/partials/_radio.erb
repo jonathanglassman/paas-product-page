@@ -2,8 +2,8 @@
 	<fieldset>
 		<legend>
 			<span class="form-label-bold"><%= label %></span>
-			<span class="form-hint"><%= hint %></span>
-			<span class="error-message"><%= error %></span>
+			<% if hint %><span class="form-hint"><%= hint %></span><% end %>
+			<% if error %><span class="error-message"><%= error %></span><% end %>
 		</legend>
 		<% options.each_with_index do |opt, idx| %>
 			<div class="multiple-choice">
