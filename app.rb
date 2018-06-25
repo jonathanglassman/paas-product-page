@@ -81,7 +81,7 @@ class App < Sinatra::Base
 			erb :'contact-us'
 		else
 			begin
-				zendesk.tickets.create! @form.to_zendesk_ticket
+				send_ticket @form
 				@msg = "We’ll contact you in the next working day"
 				erb :thanks
 			rescue => ex
@@ -126,7 +126,7 @@ class App < Sinatra::Base
 			return erb :signup
 		else
 			begin
-				zendesk.tickets.create! @form.to_zendesk_ticket
+				send_ticket @form
 				@msg = "We’ll email you with your organisation account details in the next working day."
 				erb :thanks
 			rescue => ex
@@ -188,6 +188,14 @@ class App < Sinatra::Base
 				config.url = ENV['ZENDESK_URL']
 				config.username = ENV['ZENDESK_USER']
 				config.token = ENV['ZENDESK_TOKEN']
+			end
+		end
+
+		def send_ticket(form)
+			if ENV['FAKE_ZENDESK'].nil? or ENV['FAKE_ZENDESK'].empty?
+				zendesk.tickets.create! form.to_zendesk_ticket
+			else
+				pp form.to_zendesk_ticket()
 			end
 		end
 

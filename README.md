@@ -38,6 +38,13 @@ ZENDESK_GROUP_ID=123456789 \
 make dev
 ```
 
+To print the tickets to stdout rather than send to zendesk
+
+```
+FAKE_ZENDESK='true' \
+make dev
+```
+
 ## Deploying changes
 
 This application should not be manually deployed to production. A pipeline
