@@ -149,6 +149,8 @@ class App < Sinatra::Base
 		case name
 		when "something-wrong-with-service"
 			Forms::SupportSomethingWrongWithService
+		when "help-using-paas"
+			Forms::SupportHelpUsingPaas
 		else
 			nil
 		end

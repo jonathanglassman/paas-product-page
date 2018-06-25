@@ -102,6 +102,14 @@ module Forms
 		end
 	end
 
+	class SupportHelpUsingPaas < GenericContact
+		field :organization_name,	String, :required => false, :label => 'Organisation name'
+
+		def subject
+			"[PaaS Support] #{Date.today.to_s} request for help"
+		end
+	end
+
 	module Helpers
 
 		# return comma seperated list of errors from validation if resourse has been validated

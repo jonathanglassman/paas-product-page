@@ -1,0 +1,73 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-large">I need some help using GOV.UK PaaS</h1>
+			<% if @errors && @errors.size > 0 %>
+				<div class="error-summary" role="alert" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
+					<h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">There were problems submitting your request</h2>
+					<ul class="error-summary-list">
+						<% @errors.each do |field, errs| %>
+							<% errs.each do |err| %>
+								<li class="err"><a href="#" class="focus-field" data-field="<%= field.to_s %>"><%= err %></a></li>
+							<% end %>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+
+			<form action="/support/help-using-paas" method="post">
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_name,
+						label: 'Your name',
+						hint: '',
+						value: params[:person_name],
+						error: errors_for(@form, :person_name)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_email,
+						label: 'Your email address',
+						hint: '',
+						value: params[:person_email],
+						error: errors_for(@form, :person_email)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :organization_name,
+						label: 'Your GOV.UK PaaS organisation name (optional)',
+						hint: '',
+						value: params[:organization_name],
+						error: errors_for(@form, :organization_name)
+					}
+				%>
+				<%==
+					erb :"partials/_textarea", :locals => {
+						name: :message,
+						label: "Tell us a bit more about what you’re trying to do",
+						hint: '',
+						value: params[:message],
+						error: errors_for(@form, :message)
+					}
+				%>
+				<div class="form-group">
+					<button id="submit" class="button" type="submit">Submit</button>
+				</div>
+			</form>
+			<h2 class="heading-medium">Other help you can get</h2>
+			<p>We publish our guidance on how to use the platform in our <a href="https://docs.cloud.service.gov.uk">documentation</a>.</p>
+			<p>You can also talk to us via the cross-government Slack channel <span class="bold-small">#govuk-paas</span> on the UK Government Digital workspace, or the <span class="bold-small">#paas</span> channel on the GDS workspace.</p>
+		</div>
+	</div>
+</div>
+
