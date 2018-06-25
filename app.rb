@@ -68,13 +68,8 @@ class App < Sinatra::Base
 
 	post '/contact-us' do
 		@errors = {}
-		@form = Forms::Contact.new({
-			:person_email => params[:person_email],
-			:person_name => params[:person_name],
-			:message => params[:message],
-			:department_name => params[:department_name],
-			:service_name => params[:service_name],
-		})
+		@form = Forms::Contact.new(params)
+
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
@@ -106,20 +101,17 @@ class App < Sinatra::Base
 
 	post '/signup' do
 		@errors = {}
-		@form = Forms::Signup.new({
-			:person_email => params[:person_email] || '',
-			:person_name => params[:person_name] || '',
-			:person_is_manager => params[:person_is_manager] == 'true',
-			:department_name => params[:department_name] || '',
-			:service_name => params[:service_name] || '',
-			:invite_users => params[:invite_users] == 'true',
-			:invites => (params[:invites] || {'0': {:person_email => '', :person_is_manager => false}}).map{ |indexKey, invite|
-				Forms::Invite.new({
-					:person_email => invite[:person_email] || '',
-					:person_is_manager => invite[:person_is_manager] == 'true',
-				})
-			}.reject{|invite| invite.person_email.empty? }
-		})
+		# Sanitise invites
+		default_invite_params = {'0': {:person_email => '', :person_is_manager => false}}
+		params[:invites] = (params[:invites] || default_invite_params).map{ |indexKey, invite|
+			Forms::Invite.new(invite)
+		}.reject{|invite| invite.person_email.empty? }
+
+		# delete step
+		params.delete(:step)
+
+		@form = Forms::Signup.new(params)
+
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
