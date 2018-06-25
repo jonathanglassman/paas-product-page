@@ -63,7 +63,7 @@ class App < Sinatra::Base
 	get '/contact-us' do
 		@errors = {}
 		@form = Forms::Contact.new
-		erb :'contact-us'
+		erb :'forms/contact-us'
 	end
 
 	post '/contact-us' do
@@ -73,16 +73,16 @@ class App < Sinatra::Base
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
-			erb :'contact-us'
+			erb :'forms/contact-us'
 		else
 			begin
 				send_ticket @form
 				@msg = "We’ll contact you in the next working day"
-				erb :thanks
+				erb :'forms/thanks'
 			rescue => ex
 				status 500
 				@errors[:fatal] = [ex.to_s]
-				erb :'contact-us'
+				erb :'forms/contact-us'
 			end
 		end
 	end
@@ -96,7 +96,7 @@ class App < Sinatra::Base
 				:person_is_manager => false
 			}) }
 		})
-		erb :signup
+		erb :'forms/signup'
 	end
 
 	post '/signup' do
@@ -115,18 +115,22 @@ class App < Sinatra::Base
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
-			return erb :signup
+			return erb :'forms/signup'
 		else
 			begin
 				send_ticket @form
 				@msg = "We’ll email you with your organisation account details in the next working day."
-				erb :thanks
+				erb :'forms/thanks'
 			rescue => ex
 				status 500
 				@errors[:fatal] = [ex.to_s]
-				erb :signup
+				erb :'forms/signup'
 			end
 		end
+	end
+
+	get '/support' do
+		erb :'forms/support'
 	end
 
 	post '/support' do
