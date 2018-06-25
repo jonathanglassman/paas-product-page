@@ -10,47 +10,27 @@
 	<div class="grid-row">
 		<div class="column-two-thirds">
 			<h1 class="heading-xlarge">Get support</h1>
-			<p>
-			You can view the availability and database connectivity of live applications on GOV.UK PaaS on <a href="https://status.cloud.service.gov.uk/">our system status page</a>. If you have a critical issue, start by checking this page: if it’s an issue with GOV.UK PaaS we’re already working on it, and we’ll keep our users updated on the progression of the incident.
-			</p>
 
-			<h2 class="heading-large">Report an issue</h2>
-			<p>
-			You can email us at <a href="mailto:gov-uk-paas-support@digital.cabinet-office.gov.uk">gov-uk-paas-support@digital.cabinet-office.gov.uk</a>.
-			</p>
-			<p>
-			We will start working on critical issues impacting production services within 20 or 40 minutes, depending on the time of the day. Read more about <a href="/support-and-response-times#response_times">how we classify issues and our response times</a>.
-			</p>
-			<p>
-If you have a critical issue outside of working hours and you want to get in touch with us, use the emergency email address you have been given. It will raise a high priority ticket that could alert us during the night, so it should only be used for critical incidents. Please do not share this email address with people outside of your team.
-			</p>
+			<form action="/support" method="post">
+				<%==
+					erb :"partials/_radio", :locals => {
+						name: :support_form,
+						label: 'How can we help you?',
+						value: 'something-wrong-with-service',
+						error: nil,
+						hint: nil,
+						options: [
+							{label: 'Something’s wrong with my live service', value: 'something-wrong-with-service'},
+							{label: 'I need some help using GOV.UK', value: 'help-using-paas'},
+							{label: 'I’d like to find out more about GOV.UK PaaS', value: 'find-out-more'},
+						],
+					}
 
-			<h2 class="heading-large">Get help using the platform</h2>
-			<p>If you need help using GOV.UK PaaS, you can send your queries to <a href="mailto:gov-uk-paas-support@digital.cabinet-office.gov.uk">gov-uk-paas-support@digital.cabinet-office.gov.uk</a>. We’ll reply to your question as soon as possible, however we do prioritise support for incidents and issues to general queries. If you get in contact outside of working hours we’ll check your query on the next business day.</p>
-
-			<h2 class="heading-large">Escalate support requests</h2>
-			<p>
-			If we are not handling your request for support in the way you would expect, please contact a member of the product team, who will reply during working hours:
-			</p>
-			<p>
-			Jess O'Leary, product manager - <a href="mailto:jessica.oleary@digital.cabinet-office.gov.uk">jessica.oleary@digital.cabinet-office.gov.uk</a>
-			</p>
-			<p>
-			Ben Andrews, product manager - <a href="mailto:ben.andrews@digital.cabinet-office.gov.uk">ben.andrews@digital.cabinet-office.gov.uk</a>
-			</p>
-			<p>
-			To escalate an issue about a production service outside of working hours, please use the escalation contact details you have been sent.
-			</p>
-
-			<h2 class="heading-large">Updates and announcements</h2>
-
-			<p>
-			Use our <a href="https://status.cloud.service.gov.uk/">system status page</a> feed to sign up to get alerts and incident updates.
-			</p>
-			<p>
-			<a href="https://groups.google.com/a/digital.cabinet-office.gov.uk/forum/?hl=en#!forum/gov-uk-paas-announce">Join our announcements mailing list</a> to find out about new features and changes to the platform.
-
-			</p>
+				%>
+				<div class="form-group">
+					<button id="submit" class="button" type="submit">Continue</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

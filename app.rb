@@ -129,6 +129,10 @@ class App < Sinatra::Base
 		end
 	end
 
+	post '/support' do
+		redirect("/support/#{params[:support_form]}", 302)
+	end
+
 	get '/*' do
 		path = params[:splat].first
 
