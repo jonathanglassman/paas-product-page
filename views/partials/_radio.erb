@@ -1,9 +1,9 @@
 <div class="form-group form-group--<%= name %> <%= error ? 'form-group-error' : '' %>">
 	<fieldset>
 		<legend>
-			<span class="form-label-bold"><%= label %></span>
-			<% if hint %><span class="form-hint"><%= hint %></span><% end %>
-			<% if error %><span class="error-message"><%= error %></span><% end %>
+			<p class="<%= defined?(label_class) ? label_class : 'form-label-bold' %>"><%= label %></p>
+			<% if hint %><p class="form-hint"><%= hint %></p><% end %>
+			<% if error %><p class="error-message"><%= error %></p><% end %>
 		</legend>
 		<% options.each_with_index do |opt, idx| %>
 			<div class="multiple-choice">
