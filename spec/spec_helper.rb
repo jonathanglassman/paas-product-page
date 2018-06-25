@@ -1,5 +1,5 @@
 require 'webmock/rspec'
-require 'support/fake_zendesk'
+require 'json'
 
 WebMock.allow_net_connect!
 
@@ -15,7 +15,8 @@ ENV['ZENDESK_GROUP_ID'] = '1'
 RSpec.configure do |config|
 
 	config.before(:each) do
-		stub_request(:any, /#{FAKE_ZENDESK_ENDPOINT}/).to_rack(FakeZenDesk)
+		stub_request(:post, /#{FAKE_ZENDESK_ENDPOINT}/).
+			to_return(body: {:ticket => {:id => 100001}}.to_json, status: 201)
 	end
 
 	config.expect_with :rspec do |expectations|

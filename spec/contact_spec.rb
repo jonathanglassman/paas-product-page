@@ -22,6 +22,28 @@ RSpec.describe "ContactUs", :type => :feature do
 			expect(err.text).to be_empty, "Did not expect to see a summary of errors but got: #{err.text}"
 		end
 		expect(page.status_code).to eq(200)
+
+		expect(WebMock).to have_requested(
+			:post, "#{ENV['ZENDESK_URL']}/tickets"
+		).once.with{|req|
+			data = JSON.parse(req.body)
+			expect(data).to include("ticket")
+			expect(data["ticket"]).to include("subject")
+			expect(data["ticket"]["subject"]).to match(/\[PaaS Support\] .* support request from website/)
+			expect(data["ticket"]).to include("requester" => {"email"=>"jeff@test.gov.uk", "name"=>"Jeff Jefferson"})
+			expect(data["ticket"]).to include("group_id" => ENV['ZENDESK_GROUP_ID'].to_i)
+			expect(data["ticket"]).to include("tags")
+			expect(data["ticket"]["tags"]).to include("govuk_paas_support")
+			expect(data["ticket"]["tags"]).to include("govuk_paas_product_page")
+
+			expect(data["ticket"]).to include("comment")
+			expect(data["ticket"]["comment"]).to include("body")
+			expect(data["ticket"]["comment"]["body"]).to include("From: Jeff Jefferson")
+			expect(data["ticket"]["comment"]["body"]).to include("Email: jeff@test.gov.uk")
+			expect(data["ticket"]["comment"]["body"]).to include("Department name: TestDept")
+			expect(data["ticket"]["comment"]["body"]).to include("Service name: TestService")
+			expect(data["ticket"]["comment"]["body"]).to include("Hello There")
+		}
 	end
 
 	it "should require person_name field" do
