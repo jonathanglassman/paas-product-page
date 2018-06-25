@@ -32,11 +32,12 @@ class Model
 
 	# fields returns all the field definitions set for the resource
 	def self.fields
-		@fields
+		parent_fields = superclass.respond_to?(:fields) ? superclass.fields : {}
+		parent_fields.merge(@fields)
 	end
 
 	def self.has_field?(name)
-		@fields.each do |k,v|
+		fields.each do |k,v|
 			if k.to_s == name.to_s
 				return true
 			end
