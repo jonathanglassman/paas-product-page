@@ -144,6 +144,70 @@ class App < Sinatra::Base
 		end
 	end
 
+	# Get the model class form for the support page
+	def get_support_form_class(name)
+		case name
+		when "something-wrong-with-service"
+			Forms::SupportSomethingWrongWithService
+		else
+			nil
+		end
+	end
+
+	get '/support/*' do
+		form_name = params[:splat].first
+		path = "forms/" + form_name
+		if !/^[\/a-zA-Z0-9_-]+$/.match(form_name) or ! File.exist? "views/#{path}.erb"
+            return not_found
+		end
+
+		form_class = get_support_form_class(form_name)
+		if form_class.nil?
+			return not_found
+		end
+
+		@form = form_class.new
+		content_type 'text/html;charset=utf8'
+		erb(path.to_sym)
+	end
+
+	post '/support/*' do
+		form_name = params[:splat].first
+		path = "forms/" + form_name
+		if !/^[\/a-zA-Z0-9_-]+$/.match(form_name) or ! File.exist? "views/#{path}.erb"
+            return not_found
+		end
+
+		form_class = get_support_form_class(form_name)
+		if form_class.nil?
+			return not_found
+		end
+
+		@errors = {}
+		params.delete(:splat)
+		@form = form_class.new(params)
+		if not @form.valid?
+			@errors = @form.errors
+			status 400
+			return erb(path.to_sym)
+		else
+			begin
+				send_ticket @form
+				submitted_path = path + '_submitted'
+				if ! File.exist? "views/#{submitted_path}.erb"
+					@msg = "We try to reply to all queries by the end of the next working day."
+					erb :'forms/thanks'
+				else
+					erb(submitted_path.to_sym)
+				end
+			rescue => ex
+				status 500
+				@errors[:fatal] = [ex.to_s]
+				erb(path.to_sym)
+			end
+		end
+	end
+
 	get '/*' do
 		path = params[:splat].first
 

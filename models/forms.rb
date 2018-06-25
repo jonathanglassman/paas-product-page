@@ -93,6 +93,15 @@ module Forms
 		end
 	end
 
+	class SupportSomethingWrongWithService < GenericContact
+		field :organization_name,	String, :required => true, :label => 'Organisation name'
+		field :severity,			String, :required => true, :label => 'Severity'
+
+		def subject
+			"[PaaS Support] #{Date.today.to_s} something wrong in #{organization_name} live service"
+		end
+	end
+
 	module Helpers
 
 		# return comma seperated list of errors from validation if resourse has been validated
