@@ -151,6 +151,8 @@ class App < Sinatra::Base
 			Forms::SupportSomethingWrongWithService
 		when "help-using-paas"
 			Forms::SupportHelpUsingPaas
+		when "find-out-more"
+			Forms::SupportFindOutMore
 		else
 			nil
 		end

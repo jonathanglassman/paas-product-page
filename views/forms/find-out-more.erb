@@ -1,0 +1,78 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-large">I’d like to find out more about GOV.UK PaaS</h1>
+
+			<div class="panel panel-border-wide">
+				<p>Contact us if you have a question about GOV.UK PaaS or you want to find out whether it's the right solution for your service.</p>
+			</div>
+
+			<% if @errors && @errors.size > 0 %>
+				<div class="error-summary" role="alert" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
+					<h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">There were problems submitting your request</h2>
+					<ul class="error-summary-list">
+						<% @errors.each do |field, errs| %>
+							<% errs.each do |err| %>
+								<li class="err"><a href="#" class="focus-field" data-field="<%= field.to_s %>"><%= err %></a></li>
+							<% end %>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+
+			<form action="/support/find-out-more" method="post">
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_name,
+						label: 'Your name',
+						hint: '',
+						value: params[:person_name],
+						error: errors_for(@form, :person_name)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_email,
+						label: 'Your email address',
+						hint: '',
+						value: params[:person_email],
+						error: errors_for(@form, :person_email)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :organization_name,
+						label: 'Your government organisation’s name',
+						hint: '',
+						value: params[:organization_name],
+						error: errors_for(@form, :organization_name)
+					}
+				%>
+				<%==
+					erb :"partials/_textarea", :locals => {
+						name: :message,
+						label: "Tell us a bit more about what you need to know and we’ll be in contact to discuss it",
+						hint: '',
+						value: params[:message],
+						error: errors_for(@form, :message)
+					}
+				%>
+				<div class="form-group">
+					<button id="submit" class="button" type="submit">Submit</button>
+				</div>
+			</form>
+			<h2 class="heading-medium">More information</h2>
+			<p>Our documentation lists the <a href="https://docs.cloud.service.gov.uk/#before-you-start">requirements for an app to run on GOV.UK PaaS</a>.</p>
+			<p>Read more about our <a href="/features">features and roadmap</a>.</p>
+		</div>
+	</div>
+</div>
+
