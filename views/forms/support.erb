@@ -16,8 +16,8 @@
 					erb :"partials/_radio", :locals => {
 						name: :support_form,
 						label: 'How can we help you?',
-						value: 'something-wrong-with-service',
-						error: nil,
+						value: nil,
+						error: @errors[:support_form],
 						hint: nil,
 						options: [
 							{label: 'Something’s wrong with my live service', value: 'something-wrong-with-service'},

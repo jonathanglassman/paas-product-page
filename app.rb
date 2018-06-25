@@ -130,11 +130,18 @@ class App < Sinatra::Base
 	end
 
 	get '/support' do
+		@errors = {}
 		erb :'forms/support'
 	end
 
 	post '/support' do
-		redirect("/support/#{params[:support_form]}", 302)
+		if params[:support_form].nil? or params[:support_form].empty?
+			@errors = {support_form: "Please select an option"}
+			status 400
+			erb :'forms/support'
+		else
+			redirect("/support/#{params[:support_form]}", 302)
+		end
 	end
 
 	get '/*' do

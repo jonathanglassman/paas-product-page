@@ -17,6 +17,13 @@ RSpec.describe "Support", :type => :feature do
 		expect(page.status_code).to eq(200)
 	end
 
+	it "should error if not form is selected" do
+		visit '/support'
+		click_button('submit')
+		expect(page.status_code).to eq(400)
+		expect(page.current_path).to eq('/support')
+	end
+
 	describe "support/something-wrong-with-service" do
 		it "should redirect to the right support sub-form" do
 			visit '/support'
