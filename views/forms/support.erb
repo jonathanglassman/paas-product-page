@@ -1,0 +1,37 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-xlarge">Get support</h1>
+
+			<form action="/support" method="post">
+				<%==
+					erb :"partials/_radio", :locals => {
+						name: :support_form,
+						label: 'How can we help you?',
+						label_class: 'form-label-large',
+						value: nil,
+						error: @errors[:support_form],
+						hint: nil,
+						options: [
+							{label: 'Something’s wrong with my live service', value: 'something-wrong-with-service'},
+							{label: 'I need some help using GOV.UK', value: 'help-using-paas'},
+							{label: 'I’d like to find out more about GOV.UK PaaS', value: 'find-out-more'},
+						],
+					}
+
+				%>
+				<div class="form-group">
+					<button id="submit" class="button" type="submit">Continue</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

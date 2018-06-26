@@ -63,31 +63,26 @@ class App < Sinatra::Base
 	get '/contact-us' do
 		@errors = {}
 		@form = Forms::Contact.new
-		erb :'contact-us'
+		erb :'forms/contact-us'
 	end
 
 	post '/contact-us' do
 		@errors = {}
-		@form = Forms::Contact.new({
-			:person_email => params[:person_email],
-			:person_name => params[:person_name],
-			:message => params[:message],
-			:department_name => params[:department_name],
-			:service_name => params[:service_name],
-		})
+		@form = Forms::Contact.new(params)
+
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
-			erb :'contact-us'
+			erb :'forms/contact-us'
 		else
 			begin
-				zendesk.tickets.create! @form.to_zendesk_ticket
+				send_ticket @form
 				@msg = "We’ll contact you in the next working day"
-				erb :thanks
+				erb :'forms/thanks'
 			rescue => ex
 				status 500
 				@errors[:fatal] = [ex.to_s]
-				erb :'contact-us'
+				erb :'forms/contact-us'
 			end
 		end
 	end
@@ -101,38 +96,118 @@ class App < Sinatra::Base
 				:person_is_manager => false
 			}) }
 		})
-		erb :signup
+		erb :'forms/signup'
 	end
 
 	post '/signup' do
 		@errors = {}
-		@form = Forms::Signup.new({
-			:person_email => params[:person_email] || '',
-			:person_name => params[:person_name] || '',
-			:person_is_manager => params[:person_is_manager] == 'true',
-			:department_name => params[:department_name] || '',
-			:service_name => params[:service_name] || '',
-			:invite_users => params[:invite_users] == 'true',
-			:invites => (params[:invites] || {'0': {:person_email => '', :person_is_manager => false}}).map{ |indexKey, invite|
-				Forms::Invite.new({
-					:person_email => invite[:person_email] || '',
-					:person_is_manager => invite[:person_is_manager] == 'true',
-				})
-			}.reject{|invite| invite.person_email.empty? }
-		})
+		# Sanitise invites
+		default_invite_params = {'0': {:person_email => '', :person_is_manager => false}}
+		params[:invites] = (params[:invites] || default_invite_params).map{ |indexKey, invite|
+			Forms::Invite.new(invite)
+		}.reject{|invite| invite.person_email.empty? }
+
+		# delete step
+		params.delete(:step)
+
+		@form = Forms::Signup.new(params)
+
 		if not @form.valid?
 			@errors = @form.errors
 			status 400
-			return erb :signup
+			return erb :'forms/signup'
 		else
 			begin
-				zendesk.tickets.create! @form.to_zendesk_ticket
+				send_ticket @form
 				@msg = "We’ll email you with your organisation account details in the next working day."
-				erb :thanks
+				erb :'forms/thanks'
 			rescue => ex
 				status 500
 				@errors[:fatal] = [ex.to_s]
-				erb :signup
+				erb :'forms/signup'
+			end
+		end
+	end
+
+	get '/support' do
+		@errors = {}
+		erb :'forms/support'
+	end
+
+	post '/support' do
+		if params[:support_form].nil? or params[:support_form].empty?
+			@errors = {support_form: "Please select an option"}
+			status 400
+			erb :'forms/support'
+		else
+			redirect("/support/#{params[:support_form]}", 302)
+		end
+	end
+
+	# Get the model class form for the support page
+	def get_support_form_class(name)
+		case name
+		when "something-wrong-with-service"
+			Forms::SupportSomethingWrongWithService
+		when "help-using-paas"
+			Forms::SupportHelpUsingPaas
+		when "find-out-more"
+			Forms::SupportFindOutMore
+		else
+			nil
+		end
+	end
+
+	get '/support/*' do
+		form_name = params[:splat].first
+		path = "forms/" + form_name
+		if !/^[\/a-zA-Z0-9_-]+$/.match(form_name) or ! File.exist? "views/#{path}.erb"
+            return not_found
+		end
+
+		form_class = get_support_form_class(form_name)
+		if form_class.nil?
+			return not_found
+		end
+
+		@form = form_class.new
+		content_type 'text/html;charset=utf8'
+		erb(path.to_sym)
+	end
+
+	post '/support/*' do
+		form_name = params[:splat].first
+		path = "forms/" + form_name
+		if !/^[\/a-zA-Z0-9_-]+$/.match(form_name) or ! File.exist? "views/#{path}.erb"
+            return not_found
+		end
+
+		form_class = get_support_form_class(form_name)
+		if form_class.nil?
+			return not_found
+		end
+
+		@errors = {}
+		params.delete(:splat)
+		@form = form_class.new(params)
+		if not @form.valid?
+			@errors = @form.errors
+			status 400
+			return erb(path.to_sym)
+		else
+			begin
+				send_ticket @form
+				submitted_path = path + '_submitted'
+				if ! File.exist? "views/#{submitted_path}.erb"
+					@msg = "We try to reply to all queries by the end of the next working day."
+					erb :'forms/thanks'
+				else
+					erb(submitted_path.to_sym)
+				end
+			rescue => ex
+				status 500
+				@errors[:fatal] = [ex.to_s]
+				erb(path.to_sym)
 			end
 		end
 	end
@@ -188,6 +263,14 @@ class App < Sinatra::Base
 				config.url = ENV['ZENDESK_URL']
 				config.username = ENV['ZENDESK_USER']
 				config.token = ENV['ZENDESK_TOKEN']
+			end
+		end
+
+		def send_ticket(form)
+			if ENV['FAKE_ZENDESK'].nil? or ENV['FAKE_ZENDESK'].empty?
+				zendesk.tickets.create! form.to_zendesk_ticket
+			else
+				pp form.to_zendesk_ticket()
 			end
 		end
 

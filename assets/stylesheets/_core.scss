@@ -50,11 +50,21 @@
 @import "modules/task-list";
 @import "modules/sub-navigation";
 
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  background-color: #dee0e2;
+  }
+
 
 html, body {
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 	@include core-19;
+}
+
+body {
+	background-color: white;
 }
 
 
@@ -124,6 +134,10 @@ fieldset {
 	display: none;
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
+
 .form-group-error {
 
 	.error-message {
@@ -136,6 +150,18 @@ fieldset {
 	table .form-control {
 		border-color: #ccc;
 	}
+}
+
+.form-label-large {
+	@include bold-24;
+	margin-bottom: 12px;
+}
+
+.button {
+    padding-top: 0.50315em;
+    padding-right: 0.789473em;
+    padding-bottom: 0.323157em;
+    padding-left: 0.789473em;
 }
 
 table th {

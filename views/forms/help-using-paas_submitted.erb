@@ -1,0 +1,18 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-large">We got your message</h1>
+			<p>We try to reply to all queries by the end of the next working day.</p>
+			<p>Read more about our <a href="/support-and-response-times">support and response times</a>.</p>
+		</div>
+	</div>
+</div>
+

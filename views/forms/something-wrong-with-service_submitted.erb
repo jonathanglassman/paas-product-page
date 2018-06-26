@@ -1,0 +1,20 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-large">We got your message</h1>
+			<p>We deal with the most critical issues first. During working hours we will start investigating critical issues within 20 minutes.</p>
+			<p>Outside of working hours we support critical issues only, and we aim to start working on the issue within 40 minutes.</p>
+			<p>If the issue is not impacting your service, we aim to start working on your request within 1 business day.</p>
+			<p>Read more about our <a href="/support-and-response-times">support and response times</a>.</p>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,92 @@
+<% content_for :head do %>
+	<title>Support - <%= settings.title %></title>
+<% end %>
+
+<% content_for :breadcrumb do %>
+	<%== erb :'partials/_breadcrumb', :locals => {name: 'Support', href: '/support', active: true} %>
+<% end %>
+
+<div class="container">
+	<div class="grid-row">
+		<div class="column-two-thirds">
+			<h1 class="heading-large">Something’s wrong with my live service</h1>
+			<div class="panel panel-border-wide">
+				<p>If you have a critical issue, start by checking the <a href="https://status.cloud.service.gov.uk/">system status page</a>: if it’s a known issue with the platform, it will show there and we’ll keep our users updated on the progression of the incident.</p>
+			</div>
+
+			<% if @errors && @errors.size > 0 %>
+				<div class="error-summary" role="alert" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
+					<h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">There were problems submitting your request</h2>
+					<ul class="error-summary-list">
+						<% @errors.each do |field, errs| %>
+							<% errs.each do |err| %>
+								<li class="err"><a href="#" class="focus-field" data-field="<%= field.to_s %>"><%= err %></a></li>
+							<% end %>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+
+			<form action="/support/something-wrong-with-service" method="post">
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_name,
+						label: 'Your name',
+						hint: '',
+						value: params[:person_name],
+						error: errors_for(@form, :person_name)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :person_email,
+						label: 'Your email address',
+						hint: '',
+						value: params[:person_email],
+						error: errors_for(@form, :person_email)
+					}
+				%>
+				<%==
+					erb :"partials/_input", :locals => {
+						name: :organization_name,
+						label: 'The name of the organisation affected',
+						hint: '',
+						value: params[:organization_name],
+						error: errors_for(@form, :organization_name)
+					}
+				%>
+				<%==
+					radio_for(@form,
+						:severity,
+						label: 'How severely is this impacting your service?',
+						hint: '',
+						options: [
+						{label: 'Your live service is not available to end users', value: 'service_down'},
+						{label: 'End users are experiencing a degraded live service', value: 'service_degraded'},
+						{label: 'You can’t make a critical change to live applications', value: 'cannot_operate_live'},
+						{label: 'You can’t make changes to development applications', value: 'cannot_operate_dev'},
+						{label: 'Other', value: 'other'},
+					])
+				%>
+				<%==
+					erb :"partials/_textarea", :locals => {
+						name: :message,
+						label: "Tell us a bit more about the issue",
+						hint: '',
+						value: params[:message],
+						error: errors_for(@form, :message)
+					}
+				%>
+				<div class="form-group">
+					<button id="submit" class="button" type="submit">Submit</button>
+				</div>
+			</form>
+			<h2 class="heading-medium">Escalate a request</h2>
+			<p>If you have already sent your request for support, and you think we’re not handling it in the way you would expect, please contact a member of the product team, who will reply during working hours:</p>
+			<p>Jess O'Leary, product manager: <a href=""> jessica.o'leary@digital.cabinet-office.gov.uk</a></p>
+			<p>Ben Andrews, product manager: <a href="">ben.andrews@digital.cabinet-office.gov.uk</a></p>
+			<p>To escalate an issue about a production service outside of working hours, please use the escalation contact details you have been sent.</p>
+		</div>
+	</div>
+</div>
+
