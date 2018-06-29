@@ -5,10 +5,11 @@ module Forms
 
 	class GenericContact < Model
 		MAX_FIELD_LEN = 2048
+		MAX_MESSAGE_LEN = 50000
 
 		field :person_name,                  String, :required => true, :min => 2, :max => MAX_FIELD_LEN, :label => 'Name'
 		field :person_email,                 String, :required => true, :match => VALID_EMAIL_REGEX, :min => 5, :max => MAX_FIELD_LEN, :label => 'Email address'
-		field :message,                      String, :required => true, :max => MAX_FIELD_LEN, :min => 1, :label => 'Message'
+		field :message,                      String, :required => true, :max => MAX_MESSAGE_LEN, :min => 1, :label => 'Message'
 
 		def subject
 			"[PaaS Support] #{Date.today.to_s} support request from website"
